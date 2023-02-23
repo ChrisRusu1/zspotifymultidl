@@ -19,6 +19,7 @@ WORKDIR /app
 COPY --from=builder /install /usr/local
 
 COPY zspotify.py /app
+COPY bulkdownload.txt /app
 
 VOLUME /download /config
 

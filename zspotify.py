@@ -159,7 +159,7 @@ def login():
         except RuntimeError:
             pass
     while True:
-        user_name = "31pidxj2lpmssbtnsldhlksoybqa"
+        user_name = input("Username: ")
         password = getpass()
         try:
             SESSION = Session.Builder().user_pass(user_name, password).create()
@@ -205,40 +205,39 @@ def client():
                     download_track(song["track"]["id"], "Liked Songs/")
                 print("\n")
         elif sys.argv[1] == "-f" or sys.argv[1] == "--file":
-            if len(sys.argv) > 2:
-                with open(sys.argv[2], "r") as f:
-                    for line in f:
-                        (
-                            track_id_str,
-                            album_id_str,
-                            playlist_id_str,
-                            episode_id_str,
-                            show_id_str,
-                            artist_id_str,
-                        ) = regex_input_for_urls(line)
-                        if track_id_str is not None:
-                            download_track(track_id_str)
-                        elif artist_id_str is not None:
-                            download_artist_albums(artist_id_str)
-                        elif album_id_str is not None:
-                            download_album(album_id_str)
-                        elif playlist_id_str is not None:
-                            playlist_songs = get_playlist_songs(token, playlist_id_str)
-                            name, creator = get_playlist_info(token, playlist_id_str)
-                            for song in playlist_songs:
-                                download_track(song["track"]["id"], sanitize_data(name) + "/")
-                                print("\n")
-                        elif episode_id_str is not None:
-                            download_episode(episode_id_str)
-                        elif show_id_str is not None:
-                            for episode in get_show_episodes(token, show_id_str):
-                                download_episode(episode)
-                        else:
-                            try:
-                                search(search_text)
-                            except:
-                                client()
+            with open("bulkdownload.txt", "r") as f:
+                for line in f:
+                    (
+                        track_id_str,
+                        album_id_str,
+                        playlist_id_str,
+                        episode_id_str,
+                        show_id_str,
+                        artist_id_str,
+                    ) = regex_input_for_urls(line)
+                    if track_id_str is not None:
+                        download_track(track_id_str)
+                    elif artist_id_str is not None:
+                        download_artist_albums(artist_id_str)
+                    elif album_id_str is not None:
+                        download_album(album_id_str)
+                    elif playlist_id_str is not None:
+                        playlist_songs = get_playlist_songs(token, playlist_id_str)
+                        name, creator = get_playlist_info(token, playlist_id_str)
+                        for song in playlist_songs:
+                            download_track(song["track"]["id"], sanitize_data(name) + "/")
+                            print("\n")
+                    elif episode_id_str is not None:
+                        download_episode(episode_id_str)
+                    elif show_id_str is not None:
+                        for episode in get_show_episodes(token, show_id_str):
+                            download_episode(episode)
+                    else:
+                        try:
+                            search(search_text)
+                        except:
                             client()
+                        client()
         else:
             (
                 track_id_str,

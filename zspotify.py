@@ -159,7 +159,7 @@ def login():
         except RuntimeError:
             pass
     while True:
-        user_name = input("Username: ")
+        user_name = "31pidxj2lpmssbtnsldhlksoybqa"
         password = getpass()
         try:
             SESSION = Session.Builder().user_pass(user_name, password).create()
